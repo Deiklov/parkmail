@@ -4,15 +4,7 @@
 #include "multi_thread.c"
 
 TEST(test_seq, test_name) {
-    //ASSERT_EQ(check(),5);
     ASSERT_LT(check_seq_multi("../input_data.txt"),seqcheck("../input_data.txt"));
-//    ASSERT_STREQ(seqcheck(""), "");
-//    ASSERT_STREQ(seqcheck("llox"), "");
-//    ASSERT_STREQ(seqcheck("1llox"), "1");
-//    ASSERT_STREQ(seqcheck("1l2lox34"), "34");
-//    ASSERT_STREQ(seqcheck("12lox34"), "12");
-//    ASSERT_STREQ(seqcheck("1234"), "1234");
-//    ASSERT_STREQ(seqcheck("axaxaxa1xaxa"), "1");
 }
 
 int main(int argc, char **argv) {
