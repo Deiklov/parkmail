@@ -5,6 +5,7 @@
 
 TEST(test_seq, test_name) {
     ASSERT_LT(check_seq_multi("../input_data.txt"),seqcheck("../input_data.txt"));
+
 }
 
 int main(int argc, char **argv) {
