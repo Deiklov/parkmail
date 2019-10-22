@@ -2,20 +2,19 @@ cmake_minimum_required(VERSION 3.7)
 project(IZ2)
 
 set(CMAKE_CXX_STANDARD 14)
-#set(THREADS_PREFER_PTHREAD_FLAG ON)
-#find_package(Threads REQUIRED)
-##############
+add_library(single_thread_libr STATIC single_thread.c)
+target_include_directories(single_thread_libr PUBLIC ${PROJECT_SOURCE_DIR}/)#статическая
+
+add_library(multi_thread_libr SHARED multi_thread.c)
+target_include_directories(multi_thread_libr PUBLIC ${PROJECT_SOURCE_DIR}/)#динамическая
 add_executable(IZ2 main.c)
-set(LIB_SOURCE_FILES single_thread.c multi_thread.c)
-add_library(static_single STATIC ${LIB_SOURCE_FILES})# сделали статическую библиотеку
-target_link_libraries(IZ2 static_single pthread)#собрали бинарь с использов. стат либ
+target_link_libraries(IZ2 PRIVATE single_thread_libr)
+target_link_libraries(IZ2 PRIVATE multi_thread_libr pthread)
 
 
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(tests_gtest tests_gtest.cpp)
-
-# links gtest
-target_link_libraries(tests_gtest ${GTEST_LIBRARIES} pthread)
-target_link_libraries(tests_gtest static_single)
-target_link_libraries(IZ2 Threads::Threads)
+target_include_directories(tests_gtest PUBLIC ${PROJECT_SOURCE_DIR}/)
+## links gtest
+target_link_libraries(tests_gtest ${GTEST_LIBRARIES} pthread single_thread_libr multi_thread_libr)
