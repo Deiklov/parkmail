@@ -37,6 +37,7 @@ double seqcheck(char *name) {
     }
     free(buffer);
     free(arr);
+    //
     clock_t end = clock();
     double time=(double)(end - start) / CLOCKS_PER_SEC;
     printf("%f\n",time);
