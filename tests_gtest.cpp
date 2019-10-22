@@ -2,10 +2,9 @@
 #include "gtest/gtest.h"
 #include "single_thread.c"
 #include "multi_thread.c"
-#include "dich.cpp"
 
 TEST(test_seq, test_name) {
-    ASSERT_EQ(check(),5);
+    //ASSERT_EQ(check(),5);
     ASSERT_LT(check_seq_multi("../input_data.txt"),seqcheck("../input_data.txt"));
 //    ASSERT_STREQ(seqcheck(""), "");
 //    ASSERT_STREQ(seqcheck("llox"), "");
