@@ -28,9 +28,6 @@ jobs:
           name: Creating Binary Files
           command: 'cmake --build build'
       - run:
-          name: Valgrind
-          command: 'sudo apt install -y valgrind'
-      - run:
           name: Run GTest
           command: 'cd build && ./tests_gtest'
       - run:
