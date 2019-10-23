@@ -1,6 +1,5 @@
 #include "single_thread.h"
-
-double seqcheck(char *name) {
+work_res* seqcheck(char *name) {
     clock_t start = clock();
     const size_t arrsize = 1024 *1024*100;
     int l_ind = -1;
@@ -30,15 +29,18 @@ double seqcheck(char *name) {
         }
     }
 
-    char *buffer = (char *) malloc(sizeof(char) * max_len_number);
+    char *buffer = (char *) calloc(max_len_number,sizeof(char) );
     for (int i = 0; i < max_len_number; ++i) {
         buffer[i] = arr[l_ind + i];
        printf("%c", buffer[i]);
     }
-    free(buffer);
+    //free(buffer);
     free(arr);
     clock_t end = clock();
     double time=(double)(end - start) / CLOCKS_PER_SEC;
     printf("\nTime is %f\n",time);
-    return  time;
+    work_res *res=(work_res*)malloc(sizeof(work_res));
+    res->time=time;
+    res->seq=buffer;
+    return  res;
 }
