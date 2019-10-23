@@ -2,7 +2,7 @@
 
 double seqcheck(char *name) {
     clock_t start = clock();
-    const size_t arrsize = 1024 * 1024;
+    const size_t arrsize = 1024 *1024*100;
     int l_ind = -1;
     size_t max_len_number = 0, curr_size = 0;
     bool flag = false;///флаг для сбрасывания максимальной последовательности
@@ -11,11 +11,11 @@ double seqcheck(char *name) {
     for (int i = 0; i < arrsize; ++i)
         fscanf(f,"%c",&arr[i]);
     fclose(f);
-    for (int i = 0; i < strlen(arr); ++i) {
+    for (int i = 0; i < arrsize; ++i) {
         if (isdigit(arr[i])) {
             curr_size++;
             flag = true;
-            if (i == strlen(arr) - 1 && max_len_number < curr_size) {
+            if (i == arrsize - 1 && max_len_number < curr_size) {
                 l_ind = i - curr_size+1;
                 max_len_number = curr_size;
             }
@@ -33,13 +33,12 @@ double seqcheck(char *name) {
     char *buffer = (char *) malloc(sizeof(char) * max_len_number);
     for (int i = 0; i < max_len_number; ++i) {
         buffer[i] = arr[l_ind + i];
-    //    printf("%c", buffer[i]);
+       printf("%c", buffer[i]);
     }
     free(buffer);
     free(arr);
-    //
     clock_t end = clock();
     double time=(double)(end - start) / CLOCKS_PER_SEC;
-    printf("%f\n",time);
+    printf("\nTime is %f\n",time);
     return  time;
 }

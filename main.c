@@ -6,4 +6,3 @@ int main(){
     check_seq_multi("../input_data.txt");
     return 0;
 }
-//////

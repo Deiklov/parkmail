@@ -14,6 +14,6 @@ typedef struct {
     char *arr;
 } segment;
 double check_seq_multi(char*);
-void *thread_routine(void*);
+void thread_routine(char*,int,int,size_t);
 void init_segment(segment *, int , size_t , char *);
 #endif //IZ2_MULTI_THREAD_H
