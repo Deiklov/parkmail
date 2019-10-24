@@ -14,4 +14,5 @@ typedef struct {
     double time;
     char* seq;
 } work_res;
+#define ALLERR "Memory allocation error"
 #endif //IZ2_STRUCT_H

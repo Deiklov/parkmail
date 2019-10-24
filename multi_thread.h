@@ -8,7 +8,7 @@
 #include "stdio.h"
 #include <ctype.h>
 #include "struct.h"
-work_res* check_seq_multi(char*);
+work_res* check_seq_multi(char*,size_t);
 void thread_routine(char*,int,int,size_t);
 void init_segment(segment *, int , size_t , char *);
 #endif //IZ2_MULTI_THREAD_H

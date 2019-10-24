@@ -1,6 +1,8 @@
+#include <c++/7/unordered_map>
 #include "multi_thread.h"
 #include "unistd.h"
 #include "wait.h"
+
 void init_segment(segment *segm, int _begin, size_t _len, char *arr) {
     segm->begin = _begin;
     segm->len = _len;
@@ -13,6 +15,10 @@ void init_segment(segment *segm, int _begin, size_t _len, char *arr) {
 
 void thread_routine(char *arr, int deskript, int begin, size_t len) {
     segment *segm = (segment *) malloc(sizeof(segment));
+    if (segm == NULL) {
+        printf(ALLERR);
+        return -1;
+    }
     init_segment(segm, begin, len, arr);
     size_t curr_size = 0;
     bool flag = false, f_begin = true;
@@ -48,29 +54,41 @@ void thread_routine(char *arr, int deskript, int begin, size_t len) {
 }
 
 
-work_res* check_seq_multi(char *name) {
+work_res *check_seq_multi(char *name, size_t arrsize) {
     clock_t start = clock();
-    const int q_segm = 20, size_segm = 1024*1024*5;
-    const size_t arrsize = q_segm * size_segm;
+    // const int q_segm = 20, size_segm = 1024 * 1024 * 5;
+    // const size_t arrsize = q_segm * size_segm;
+    const proc_count = system("cat /proc/cpuinfo|grep processor|wc -l");
+    if (proc_count < 1) {
+        printf("System error");
+        return -1;
+    }
+    size_t size_segm = arrsize % proc_count == 0 ? arrsize / proc_count : arrsize / proc_count + 1;
+
     int max_len = 0, max_ind = -1;
     FILE *f = fopen(name, "r");
     char *arr = (char *) malloc(arrsize * sizeof(char));
+    if (arr == NULL) return -1;
     for (int i = 0; i < arrsize; ++i)
         fscanf(f, "%c", &arr[i]);
     fclose(f);
     int fd[2], status;
     pipe(fd);
-    segment *segm = (segment *) malloc(q_segm * sizeof(segment));
-    for (int i = 0; i < q_segm; ++i) {
-        pid_t *pid = (pid_t *) malloc(q_segm * sizeof(pid_t));//будет столько процессов сколько сегментов
-        pid[i] = fork();
+    segment *segm = (segment *) malloc(proc_count * sizeof(segment));
+    pid_t *pid = (pid_t *) malloc(proc_count * sizeof(pid_t));
+    for (int i = 0; i < proc_count; ++i) {
+        //будет столько процессов сколько сегментов
+        if (pid[i] = fork() == -1) {
+            printf("Fork error");
+            return -1;
+        }
         if (pid[i] == 0) {
             close(fd[0]);
             thread_routine(arr, fd[1], i * size_segm, size_segm);
             exit(EXIT_SUCCESS);
         } else {
             //close(fd[1]);
-            if (i == q_segm - 1) {
+            if (i == proc_count - 1) {
                 close(fd[1]);
                 for (int j = 0; j < q_segm; ++j) {
                     waitpid(pid[j], &status, 0);
@@ -100,12 +118,12 @@ work_res* check_seq_multi(char *name) {
         printf("%c", arr[i]);
     }
     free(arr);
-   // free(buffer);
+    // free(buffer);
     clock_t end = clock();
     double time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("\nTime is %f\n", time);
-    work_res* res=(work_res*)malloc(sizeof(work_res));
-    res->time=time;
-    res->seq=buffer;
+    work_res *res = (work_res *) malloc(sizeof(work_res));
+    res->time = time;
+    res->seq = buffer;
     return res;
 }
