@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.7)
 project(IZ2)
 
 set(CMAKE_CXX_STANDARD 14)
-add_library(single_thread_libr STATIC single_thread.c)
+add_library(single_thread_libr STATIC single_thread.cpp)
 target_include_directories(single_thread_libr PUBLIC ${PROJECT_SOURCE_DIR}/)#статическая
 
-add_library(multi_thread_libr SHARED multi_thread.c)
+add_library(multi_thread_libr SHARED multi_thread.cpp)
 target_include_directories(multi_thread_libr PUBLIC ${PROJECT_SOURCE_DIR}/)#динамическая
-add_executable(IZ2 main.c)
+add_executable(IZ2 main.cpp)
 target_link_libraries(IZ2 PRIVATE single_thread_libr)
 target_link_libraries(IZ2 PRIVATE multi_thread_libr pthread)
 

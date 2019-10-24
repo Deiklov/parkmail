@@ -7,13 +7,10 @@
 #include <stdbool.h>
 #include "stdio.h"
 #include <ctype.h>
-typedef struct {
-    int begin;
-    int len;
-    int l_len, r_len, m_len, m_ind;
-    char *arr;
-} segment;
-double check_seq_multi(char*);
+#include "struct.h"
+#include "unistd.h"
+#include "wait.h"
+work_res* check_seq_multi(char*);
 void thread_routine(char*,int,int,size_t);
 void init_segment(segment *, int , size_t , char *);
 #endif //IZ2_MULTI_THREAD_H

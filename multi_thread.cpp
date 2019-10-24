@@ -1,7 +1,4 @@
 #include "multi_thread.h"
-#include "unistd.h"
-#include "wait.h"
-
 void init_segment(segment *segm, int _begin, size_t _len, char *arr) {
     segm->begin = _begin;
     segm->len = _len;
@@ -49,7 +46,7 @@ void thread_routine(char *arr, int deskript, int begin, size_t len) {
 }
 
 
-double check_seq_multi(char *name) {
+work_res* check_seq_multi(char *name) {
     clock_t start = clock();
     const int q_segm = 20, size_segm = 1024*1024*5;
     const size_t arrsize = q_segm * size_segm;
@@ -61,7 +58,6 @@ double check_seq_multi(char *name) {
     fclose(f);
     int fd[2], status;
     pipe(fd);
-    //segment segm[5];
     segment *segm = (segment *) malloc(q_segm * sizeof(segment));
     for (int i = 0; i < q_segm; ++i) {
         pid_t *pid = (pid_t *) malloc(q_segm * sizeof(pid_t));//будет столько процессов сколько сегментов
@@ -93,51 +89,21 @@ double check_seq_multi(char *name) {
                 }
                 free(pid);
             }
-//            int max_len = segm[i]->m_len, max_ind = segm[0].m_ind;
-//            for (int i = 1; i < q_segm; ++i) {
-//                if (segm[i - 1].r_len + segm[i].l_len > max_len) {
-//                    max_ind = segm[i].begin - segm[i - 1].r_len;///суммируем с краев
-//                    max_len = segm[i - 1].r_len + segm[i].l_len;
-//                }
-//                if (segm[i].m_len > max_len) {///проверяем центр, может он больше чем макс.
-//                    max_ind = segm[i].m_ind;
-//                    max_len = segm[i].m_len;
-//                }
-//            }
-
         }
     }
-//    segment segm[q_segm];
-//    pthread_t threads[q_segm];
-//    for (int j = 0; j < q_segm; ++j) {
-//        init_segment(&segm[j], j * size_segm, size_segm, arr);
-//        pthread_create(&threads[j], NULL, thread_routine, &segm[j]);
-//    }
-//    for (int i = 0; i < q_segm; ++i) {
-//        pthread_join(threads[i], NULL);
-//    }
-//    int max_len = segm[0].m_len, max_ind = segm[0].m_ind;
-//    for (int i = 1; i < q_segm; ++i) {
-//        if (segm[i - 1].r_len + segm[i].l_len > max_len) {
-//            max_ind = segm[i].begin - segm[i - 1].r_len;///суммируем с краев
-//            max_len = segm[i - 1].r_len + segm[i].l_len;
-//        }
-//        if (segm[i].m_len > max_len) {///проверяем центр, может он больше чем макс.
-//            max_ind = segm[i].m_ind;
-//            max_len = segm[i].m_len;
-//        }
-//    }
     char *buffer = (char *) calloc(max_len, sizeof(char));
-    memset(buffer, max_len, '\0');
+    //memset(buffer, max_len, '\0');
     for (int i = max_ind; i < max_ind + max_len; ++i) {
         buffer[i - max_ind] = arr[i];
         printf("%c", arr[i]);
     }
-    // puts("");
     free(arr);
-    free(buffer);
+   // free(buffer);
     clock_t end = clock();
     double time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("\nTime is %f\n", time);
-    return time;
+    work_res* res=(work_res*)malloc(sizeof(work_res));
+    res->time=time;
+    res->seq=buffer;
+    return res;
 }
