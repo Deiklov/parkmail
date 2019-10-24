@@ -8,6 +8,8 @@
 #include "stdio.h"
 #include <ctype.h>
 #include "struct.h"
+#include "unistd.h"
+#include "wait.h"
 work_res* check_seq_multi(char*);
 void thread_routine(char*,int,int,size_t);
 void init_segment(segment *, int , size_t , char *);

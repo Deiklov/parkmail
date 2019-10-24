@@ -1,6 +1,4 @@
 #include "multi_thread.h"
-#include "unistd.h"
-#include "wait.h"
 void init_segment(segment *segm, int _begin, size_t _len, char *arr) {
     segm->begin = _begin;
     segm->len = _len;
