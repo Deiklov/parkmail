@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "stdio.h"
 #include <ctype.h>
+#include<math.h>
 #include "struct.h"
 work_res* check_seq_multi(char*,size_t);
 void thread_routine(char*,int,int,size_t);

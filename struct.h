@@ -9,6 +9,7 @@ typedef struct {
     int len;
     int l_len, r_len, m_len, m_ind;
     char *arr;
+    bool ffull;
 } segment;
 typedef struct {
     double time;
