@@ -1,4 +1,3 @@
-#include <c++/7/unordered_map>
 #include "multi_thread.h"
 #include "unistd.h"
 #include "wait.h"
@@ -90,7 +89,7 @@ work_res *check_seq_multi(char *name, size_t arrsize) {
             //close(fd[1]);
             if (i == proc_count - 1) {
                 close(fd[1]);
-                for (int j = 0; j < q_segm; ++j) {
+                for (int j = 0; j < proc_count; ++j) {
                     waitpid(pid[j], &status, 0);
                     read(fd[0], &segm[j], sizeof(segment));
                     if (j == 0) {
