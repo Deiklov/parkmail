@@ -1,20 +1,10 @@
 #include "single_thread.h"
 
-work_res *seqcheck(char *name, size_t arrsize) {
+work_res *seqcheck(char *arr, size_t arrsize) {
     clock_t start = clock();
-    //const size_t arrsize = 1024 *1024*100;
     int l_ind = -1;
     size_t max_len_number = 0, curr_size = 0;
     bool flag = false;///флаг для сбрасывания максимальной последовательности
-    FILE *f = fopen(name, "r");
-    char *arr = (char *) malloc(arrsize * sizeof(char));
-    if (arr == NULL) {
-        printf(ALLERR);
-        return -1;
-    }
-    for (int i = 0; i < arrsize; ++i)
-        fscanf(f, "%c", &arr[i]);
-    fclose(f);
     for (int i = 0; i < arrsize; ++i) {
         if (isdigit(arr[i])) {
             curr_size++;
@@ -35,23 +25,19 @@ work_res *seqcheck(char *name, size_t arrsize) {
     }
 
     char *buffer = (char *) calloc(max_len_number, sizeof(char));
-    if (buffer == NULL) {
-        printf(ALLERR);
-        return -1;
-    }
     for (int i = 0; i < max_len_number; ++i) {
         buffer[i] = arr[l_ind + i];
         printf("%c", buffer[i]);
     }
     //free(buffer);
-    free(arr);
+    //free(arr);
     clock_t end = clock();
     double time = (double) (end - start) / CLOCKS_PER_SEC;
-    printf("\nTime is %f\n", time);
+    printf("\nSingletime is %f\n", time);
     work_res *res = (work_res *) malloc(sizeof(work_res));
     if (res == NULL) {
         printf(ALLERR);
-        return -1;
+        exit(0);
     }
     res->time = time;
     res->seq = buffer;

@@ -21,10 +21,10 @@ void thread_routine(char *arr, int deskript, int begin, size_t len) {
     }
     init_segment(segm, begin, len, arr);
     size_t curr_size = 0;
-    bool flag = false, f_begin = true, ffull = false;
+    bool flag = false, f_begin = true;
     ///идем до предпоследнего элемента
     for (int i = segm->begin; i < segm->begin + segm->len-1 ; ++i) {
-        char symbol=segm->arr[i];
+      //  char symbol=segm->arr[i];
         if (isdigit(segm->arr[i])) {
             curr_size++;///тек длина
             flag = true;///флаг что в числовой последовталеьности
@@ -67,15 +67,14 @@ void thread_routine(char *arr, int deskript, int begin, size_t len) {
 
 work_res *check_seq_multi(char *arr, size_t arrsize) {
     clock_t start = clock();
-    const proc_count = 4;
-    //const proc_count = system("cat /proc/cpuinfo|grep processor|wc -l");
+    const size_t proc_count = 4;
     if (proc_count < 1) {
         printf("System error");
-        return -1;
+        exit(0);
     }
     size_t size_segm = arrsize % proc_count == 0 ? arrsize / proc_count : arrsize / proc_count + 1;
     int max_len = 0, max_ind = -1;
-    if (arr == NULL) return -1;
+    if (arr == NULL) exit(0);
     int fd[2], status;
     pipe(fd);
     //на 1 сегмент 1 процесс
@@ -86,11 +85,8 @@ work_res *check_seq_multi(char *arr, size_t arrsize) {
        pid[i] = fork();
         if ( pid[i]== -1) {
             printf("Fork error");
-            return -1;
+            exit(0);
         }
-//        if (i == proc_count - 1)
-//               thread_routine(arr, fd[1], i * size_segm, arrsize - size_segm * i);
-//            else thread_routine(arr, fd[1], i * size_segm, size_segm);
         if (pid[i] == 0) {
             close(fd[0]);
             if (i == proc_count - 1)
@@ -127,7 +123,6 @@ work_res *check_seq_multi(char *arr, size_t arrsize) {
         }
     }
     char *buffer = (char *) calloc(max_len, sizeof(char));
-    //memset(buffer, max_len, '\0');
     for (int i = max_ind; i < max_ind + max_len; ++i) {
         buffer[i - max_ind] = arr[i];
         printf("%c", arr[i]);
@@ -136,7 +131,7 @@ work_res *check_seq_multi(char *arr, size_t arrsize) {
     // free(buffer);
     clock_t end = clock();
     double time = (double) (end - start) / CLOCKS_PER_SEC;
-    printf("\nTime is %f\n", time);
+    printf("\nMultitime is %f\n", time);
     work_res *res = (work_res *) malloc(sizeof(work_res));
     res->time = time;
     res->seq = buffer;
