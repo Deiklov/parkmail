@@ -7,10 +7,11 @@ TEST(test_seq, single_seq) {
     const size_t arrsize = 50;
     char *buffer = "ioisirowo29g939iifis7374284fi2i2iif829249249294528";
     char *res = seqcheck(buffer, arrsize);
+    char *res2 = seqcheck("rr564tyr446646", 14);
     EXPECT_STREQ(res, "829249249294528");
-    EXPECT_STREQ(seqcheck("rr564tyr446646", 14), "446646");
-    EXPECT_STREQ(seqcheck("1", 1), "1");
-    EXPECT_STREQ(seqcheck("", 0), "");
+    EXPECT_STREQ(res2, "446646");
+    free(res);
+    free(res2);
 
 }
 
@@ -19,9 +20,10 @@ TEST(test_seq, multi_seq) {
     char *buffer = "ioisirowo29g939iifis7374284fi2i2iif829249249294528";
     char *res = check_seq_multi(buffer, arrsize);
     EXPECT_STREQ(res, "829249249294528");
-    EXPECT_STREQ(check_seq_multi("rr564tyr446646", 14), "446646");
-    EXPECT_STREQ(check_seq_multi("1", 1), "1");
-    EXPECT_STREQ(check_seq_multi("", 0), "");
+    char *res2 = check_seq_multi("rr564tyr446646", 14);
+    EXPECT_STREQ(res2, "446646");
+    free(res);
+    free(res2);
 
 }
 
@@ -54,6 +56,9 @@ TEST(test_compare, gen_arr_compare) {
     char *res_single = seqcheck(arr, arrsize);
     char *res_multi = check_seq_multi(arr, arrsize);
     EXPECT_STREQ(res_multi, res_single);
+    free(res_single);
+    free(res_multi);
+    free(arr);
 }
 
 TEST(test_split, split_array) {
