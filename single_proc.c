@@ -1,6 +1,7 @@
 #include "single_proc.h"
 
 char *seqcheck(const char *arr, size_t arrsize) {
+    if (arr == NULL) return "";
     size_t l_ind = -1;
     size_t max_len_number = 0, curr_size = 0;
     for (size_t i = 0; i < arrsize; ++i)

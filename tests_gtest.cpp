@@ -12,6 +12,7 @@ TEST(test_seq, single_seq) {
     char *res2 = seqcheck("rr564tyr446646", 14);
     EXPECT_STREQ(res, "829249249294528");
     EXPECT_STREQ(res2, "446646");
+    EXPECT_STREQ(check_seq_multi(NULL, 0), "");
     free(res);
     free(res2);
 

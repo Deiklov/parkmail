@@ -88,6 +88,7 @@ int *split_array(size_t cores, size_t arrsize) {
 }
 
 char *check_seq_multi(char *arr, size_t arrsize) {
+    if (arr==NULL) return "";
     const size_t proc_count = get_nprocs_conf();//определили число ядер
     if (proc_count < 1) {
         printf("System error");
