@@ -1,7 +1,9 @@
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "single_proc.c"
-#include "multi_proc.c"
+
+extern "C" {
+#include "single_proc.h"
+#include "multi_proc.h"
+}
 
 TEST(test_seq, single_seq) {
     const size_t arrsize = 50;
@@ -27,24 +29,23 @@ TEST(test_seq, multi_seq) {
 
 }
 
-//TEST(test_compare, multi_vs_single) {
-//    const size_t arrsize = 1024 * 1024;
-//    char *arr = (char *) calloc(arrsize, sizeof(char));
-//    memset(arr, '\0', arrsize);
-//    FILE *f = fopen("../input_data.txt", "r");
-//    for (size_t i = 0; i < arrsize; i++)
-//        fscanf(f, "%c", &arr[i]);
-//    fclose(f);
-//    clock_t start = clock();
-//    //printf("%s\n", check_seq_multi(arr, arrsize));
-//    clock_t end = clock();
-//    printf("%f\n", (double) (end - start) / CLOCKS_PER_SEC);
-//    start = clock();
-//    //printf("%s\n", seqcheck(arr, arrsize));
-//    end = clock();
-//    printf("%f\n", (double) (end - start) / CLOCKS_PER_SEC);
-//    EXPECT_STREQ(check_seq_multi(arr, arrsize), seqcheck(arr, arrsize));
-//}
+TEST(test_compare, multi_vs_single) {
+    const size_t arrsize = 1024 * 1024 * 100;
+    char *arr = (char *) calloc(arrsize, sizeof(char));
+    srand(time(NULL));
+    char *str = "qwertyuiopasdfghjklzxcvbnm0123456789";
+    for (size_t i = 0; i < arrsize; i++)
+        arr[i] = str[rand() % 36];
+    clock_t start = clock();
+    char *res = check_seq_multi(arr, arrsize);
+    clock_t end = clock();
+    printf("%f\n", (double) (end - start) / CLOCKS_PER_SEC);
+    start = clock();
+    char *res2 = seqcheck(arr, arrsize);
+    end = clock();
+    printf("%f\n", (double) (end - start) / CLOCKS_PER_SEC);
+    EXPECT_STREQ(res, res2);
+}
 
 TEST(test_compare, gen_arr_compare) {
     srand(time(NULL));

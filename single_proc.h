@@ -9,6 +9,6 @@
 #include <ctype.h>
 #include "struct.h"
 
-char *seqcheck(const char *, size_t);
+ char *seqcheck(const char *, size_t);
 
 #endif //IZ2_SINGLE_PROC_H

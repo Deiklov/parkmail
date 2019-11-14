@@ -1,4 +1,5 @@
 #include "single_proc.h"
+#include "multi_proc.h"
 
 int main() {
     size_t arrsize = 0;
@@ -21,8 +22,11 @@ int main() {
         puts("Handle error");
         return 0;
     }
-    puts("Result:");
-    printf("%s\n", res);
+    char *res2 = check_seq_multi(buffer, arrsize);
+    printf("Single: %s\n", res);
+    printf("Multi: %s\n", res2);
+    free(res);
+    free(res2);
     free(buffer);
     return 0;
 }
